@@ -24,7 +24,7 @@
         android:layout_marginTop="680dp"
         app:play_icon_color="#000000"
         app:pause_icon_color="@color/black"
-        android:background="#551BBF"/>
+        android:background="#5A14DA"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView"
