@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+<TextView
+    android:id="@+id/icone_musica"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:textAlignment="center"
+    android:layout_margin="16dp"
+    android:padding="8dp"
+    android:textSize="25sp"
+    android:textColor="@color/black"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="M"
+    />
+
+    <TextView
+        android:id="@+id/nome_musica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/icone_musica"
+        app:layout_constraintTop_toTopOf="@+id/icone_musica"
+        tools:text="Akon-lonely"
+        />
+
+    <TextView
+        android:id="@+id/minutos_musica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/icone_musica"
+        app:layout_constraintStart_toStartOf="@+id/nome_musica"
+        app:layout_constraintTop_toBottomOf="@+id/nome_musica"
+        tools:text="3:22" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="16dp"
+        android:alpha="0.5"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icone_musica"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
