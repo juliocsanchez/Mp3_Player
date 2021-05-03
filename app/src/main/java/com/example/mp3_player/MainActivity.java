@@ -28,11 +28,6 @@ PlaylistAdapter adapter;
 String musicas[]={"Lonely","Batom de Cereja","Smack That","Parabens Pra Você","O Pai ta On","Tipo Neymar","Santo Espírito","Pra Onde Eu Irei","Drip da Roça","Um dia Azul","Olha pro Oclin"
         ,"Lonely","Batom de Cereja","Smack That","Parabens Pra Você","O Pai ta On","Tipo Neymar","Santo Espírito","Pra Onde Eu Irei","Drip da Roça","Um dia Azul","Olha pro Oclin"};
 
-String Artistas[]={"Gustavo Lima","Drake","Gustavo Lima","Drake","Gustavo Lima","Drake","Gustavo Lima","Drake","Gustavo Lima","Drake","Gustavo Lima","Drake","Gustavo Lima","Drake",
-        "Gustavo Lima","Drake","Gustavo Lima","Drake"};
-
-String tempo[]={"3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20","3","4:20",};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,34 +8,33 @@
         tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:context="MainActivity">
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.example.jean.jcplayer.view.JcPlayerView
+    <com.example.jean.jcplayer.view.JcPlayerView
         android:id="@+id/jcplayerView"
-        android:layout_width="347dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="600dp"
-        app:play_icon_color="#5C14DC" />
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="680dp"
+        app:play_icon_color="#000000"
+        app:pause_icon_color="@color/black"
+        android:background="#491F95"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="680dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_anchor="@+id/constraintLayout"/>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
