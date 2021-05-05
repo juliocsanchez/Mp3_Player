@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 public class LoadingActivity extends Activity {
     @Override
@@ -33,6 +34,7 @@ public class LoadingActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
                 startActivity(intent);
+
             }
         });
     }

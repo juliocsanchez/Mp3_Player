@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mp3_player">
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission 
+        android:name="android.permission.INTERNET" />
+    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +17,7 @@
 
         <activity
             android:name=".LoadingActivity"
-            android:label="@string/app_name"
+            android:label="jcplayer"
             android:theme="@style/Theme.MP3_Player.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
