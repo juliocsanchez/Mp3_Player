@@ -17,18 +17,18 @@ public class LoadingActivity extends Activity {
 
         // aula1();
 
-        Button button = findViewById(R.id.botao);
+        View button = findViewById(R.id.botao);
         button.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent testeSegundos = new Intent(LoadingActivity.this , MainActivity.class);
                 startActivity(testeSegundos);
                 finish();            }
-        }, 5000);
+        }, 2000);
     }
 
     public void aula1() {
-        Button botaoParaClicar = findViewById(R.id.botao);
+       View botaoParaClicar = findViewById(R.id.botao);
         botaoParaClicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

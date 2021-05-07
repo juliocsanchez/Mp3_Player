@@ -12,17 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
 
-    String data[];
+    ArrayList<ArquivosMP3> data;
     Context context;
+    OnClickMusicaDoJulio onClickMusicaDoJulio;
 
-    public PlaylistAdapter(Context context,String[] data) {
-
-        this.data=data;
-        this.context=context;
+    interface OnClickMusicaDoJulio {
+        void cliqueiTomaOPath(String path);
     }
 
+
+    public PlaylistAdapter(Context context, ArrayList<ArquivosMP3> data, OnClickMusicaDoJulio onClickMusicaDoJulio) {
+
+        this.data = data;
+        this.context = context;
+        this.onClickMusicaDoJulio = onClickMusicaDoJulio;
+    }
 
 
     @NonNull
@@ -30,9 +38,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     public PlaylistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        LayoutInflater layoutInflater= LayoutInflater.from(parent.getContext());
-        View view=layoutInflater.inflate(R.layout.item_playlist,parent,false);
-        PlaylistViewHolder playlistViewHolder=new PlaylistViewHolder(view);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.item_playlist, parent, false);
+        PlaylistViewHolder playlistViewHolder = new PlaylistViewHolder(view);
         return playlistViewHolder;
 
     }
@@ -40,22 +48,24 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     @Override
     public void onBindViewHolder(@NonNull PlaylistAdapter.PlaylistViewHolder holder, int position) {
 
-        holder.icone_musica.setText(data[position]);
-        holder.nome_musica.setText(data[position]);
-        holder.minutos_musica.setText(data[position]);
+        ArquivosMP3 musicaAtual = data.get(position);
+        holder.icone_musica.setText(musicaAtual.getTitulo());
+        holder.nome_musica.setText(musicaAtual.getTitulo());
+        holder.minutos_musica.setText(musicaAtual.getDuração());
+
 
         holder.icone_musica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Clicou em "+ data[position], Toast.LENGTH_SHORT).show();
+                onClickMusicaDoJulio.cliqueiTomaOPath(musicaAtual.getPath());
+
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return data.size();
     }
 
     public class PlaylistViewHolder extends RecyclerView.ViewHolder {
@@ -67,9 +77,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         public PlaylistViewHolder(@NonNull View itemView) {
 
             super(itemView);
-            icone_musica=itemView.findViewById(R.id.icone_musica);
-            nome_musica =itemView.findViewById(R.id.nome_musica);
-            minutos_musica=itemView.findViewById(R.id.minutos_musica);
+            icone_musica = itemView.findViewById(R.id.icone_musica);
+            nome_musica = itemView.findViewById(R.id.nome_musica);
+            minutos_musica = itemView.findViewById(R.id.minutos_musica);
 
         }
     }

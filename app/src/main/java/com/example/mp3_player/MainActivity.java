@@ -2,8 +2,11 @@ package com.example.mp3_player;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.jean.jcplayer.model.JcAudio;
@@ -21,94 +24,125 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private int PERMISSAO_PARA_ACESSAR_ARQUIVOS=1;
+    private static Object ArquivosMP3;
+    private int PERMISSAO_PARA_ACESSAR_ARQUIVOS = 1;
     RecyclerView recyclerView;
     PlaylistAdapter adapter;
-
-    String musicas[]={"Lonely","Batom de Cereja","Smack That","Parabens Pra Você","O Pai ta On","Tipo Neymar","Santo Espírito","Pra Onde Eu Irei","Drip da Roça","Um dia Azul","Olha pro Oclin"
-        ,"Lonely","Batom de Cereja","Smack That","Parabens Pra Você","O Pai ta On","Tipo Neymar","Santo Espírito","Pra Onde Eu Irei","Drip da Roça","Um dia Azul","Olha pro Oclin"};
-
-
+    ArrayList<ArquivosMP3> arquivosMP3;
+    JcPlayerView jcPlayerView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        JcPlayerView player = (JcPlayerView) findViewById(R.id.jcplayerView);
+       jcPlayerView = (JcPlayerView) findViewById(R.id.jcplayerView);
 
-        ArrayList<JcAudio> jcAudios = new ArrayList<>();
-        jcAudios.add(JcAudio.createFromURL("Test  - Juliodev","http://www.villopim.com.br/android/Music_02.mp3"));
 
-        player.initPlaylist(jcAudios, null);
-
-        recyclerView=findViewById(R.id.RecyclerView);
+        recyclerView = findViewById(R.id.RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new PlaylistAdapter(this,musicas);
-
-        recyclerView.setAdapter(adapter);
-
 
     }
 
     @Override
-    protected void onResume() {super.onResume();
+    protected void onResume() {
+        super.onResume();
 
-        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
-        }
-        else {
-            requestStoragePermission();
-        }
+            adapter = new PlaylistAdapter(this, pegar_As_Musicas(this), new PlaylistAdapter.OnClickMusicaDoJulio() {
+                @Override
+                public void cliqueiTomaOPath(String path) {
 
-        }
+                    JcAudio jcaudio =JcAudio.createFromFilePath(path);
+                    jcPlayerView.addAudio(jcaudio);
 
-         private void requestStoragePermission(){
+                    jcPlayerView.playAudio(jcaudio);
+                }
 
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+            });
 
-            new AlertDialog.Builder(this)
-                .setTitle("Permissão Necessária")
-                .setMessage("Essa permissão é necessária para acessar seus arquivos MP3 e reproduzir as músicas")
-
-
-
-                 //caso positivo
-                .setPositiveButton("ACEITAR", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSAO_PARA_ACESSAR_ARQUIVOS);
-                    }
-                })
+            recyclerView.setAdapter(adapter);
 
 
-                 //caso negativo
-                .setNegativeButton("NEGAR", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                //mostrar ao usuario a caixa de pergunta
-                .create().show();
+        } else {
+          requestStoragePermission();
 
         }
 
-
-
-        else{
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSAO_PARA_ACESSAR_ARQUIVOS);{
-             }
     }
 
-}
+    private void requestStoragePermission() {
 
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Permissão Necessária")
+                    .setMessage("Essa permissão é necessária para acessar seus arquivos MP3 e reproduzir as músicas")
+
+
+                    //caso positivo
+                    .setPositiveButton("ACEITAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSAO_PARA_ACESSAR_ARQUIVOS);
+                        }
+                    })
+
+
+                    //caso negativo
+                    .setNegativeButton("NEGAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    //mostrar ao usuario a caixa de pergunta
+                    .create().show();
+        }
+
+    }
+
+    public  ArrayList<ArquivosMP3> pegar_As_Musicas(Context context) {
+
+
+        ArrayList<ArquivosMP3> tempAudioList = new ArrayList<>();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String[] componentesDaMusica = {
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA
+        };
+
+        Cursor cursor = context.getContentResolver().query(uri, componentesDaMusica,
+                null, null, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String path = cursor.getString(3);
+                String titulo = cursor.getString(0);
+                String cantor = cursor.getString(2);
+                String duração = cursor.getString(1);
+
+                ArquivosMP3 arquivosMP3 = new ArquivosMP3(path, titulo, cantor, duração);
+                tempAudioList.add(arquivosMP3);
+            }
+            cursor.close();
+        }
+
+        return tempAudioList;
+    }
 }
